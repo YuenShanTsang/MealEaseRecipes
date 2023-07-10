@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MealEaseRecipes.Views;
+using Microsoft.Extensions.Logging;
 
 namespace MealEaseRecipes;
 
@@ -15,8 +16,11 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
+        builder.Services.AddTransient<MainPage>();
+
+
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
 		return builder.Build();
