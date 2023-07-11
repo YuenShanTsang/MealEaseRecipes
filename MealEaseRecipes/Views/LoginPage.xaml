@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MealEaseRecipes.Views.LoginPage"
+             Title="Login">
+    <VerticalStackLayout
+         HorizontalOptions="Center" 
+         VerticalOptions="Center" >
+
+        <!-- Login label -->
+        <Label
+            Text="Login"
+            CharacterSpacing="2"
+            FontAttributes="Bold"
+            FontSize="30"
+            HorizontalOptions="Center"
+            Margin="60,0"
+            TextColor="{DynamicResource Primary}"/>
+
+        <!-- Email entry -->
+        <StackLayout Orientation="Horizontal" Spacing="20" Margin="20">
+            <Image Source="https://icons.veryicon.com/png/o/miscellaneous/administration/account-25.png" WidthRequest="20" HeightRequest="20" />
+            <Entry Placeholder="Enter email" WidthRequest="200" Text="{Binding Email}" FontSize="18"/>
+        </StackLayout>
+
+        <!-- Password entry -->
+        <StackLayout Orientation="Horizontal" Spacing="15" Margin="15">
+            <Image Source="https://static.vecteezy.com/system/resources/previews/000/581/808/original/lock-icon-vector-illustration.jpg" WidthRequest="30" HeightRequest="30" />
+            <Entry Placeholder="Enter password" WidthRequest="200" IsPassword="True" Text="{Binding UserPassword}" FontSize="18"/>
+        </StackLayout>
+
+        <!-- Login Button -->
+        <Button
+            Text="Login"
+            Margin="20"
+            VerticalOptions="Center"
+            HorizontalOptions="FillAndExpand"
+            BackgroundColor="{DynamicResource RosyBrown}"
+            TextColor="White"
+            FontSize="18"
+            CornerRadius="8"
+            HeightRequest="48"
+            Command="{Binding LoginBtn}" />
+
+        <!-- Register Button -->
+        <Button
+            Text="Register using Email"
+            Grid.Row="5"
+            BackgroundColor="{DynamicResource Secondary}"
+            TextColor="{DynamicResource RosyBrown}"
+            FontSize="15"
+            CornerRadius="20"
+            HeightRequest="40"
+            Command="{Binding RegisterBtn}" />
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -8,6 +8,11 @@
 
     <ShellContent
         Title="Main"
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="Login" />
+
+    <ShellContent
+        Title="Main"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
