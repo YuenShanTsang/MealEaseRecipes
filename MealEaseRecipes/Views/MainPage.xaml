@@ -7,46 +7,48 @@
 
              Title="{Binding Title}">
 
-    <Grid
-        ColumnDefinitions="*,*"
-        ColumnSpacing="5"
-        RowDefinitions="*,Auto"
-        RowSpacing="0">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Recipe" Command="{Binding CreateRecipeCommand}" />
+    </ContentPage.ToolbarItems>
 
-        <CollectionView
-            Grid.ColumnSpan="2"
-            ItemsSource="{Binding Recipes}"
-            SelectionMode="None">
+    <StackLayout>
+        <SearchBar Placeholder="Search" Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" HorizontalOptions="FillAndExpand" WidthRequest="{Binding ScreenWidth}"/>
+
+        <CollectionView ItemsSource="{Binding FilteredRecipes}" SelectionMode="None">
             <CollectionView.ItemTemplate>
+
                 <DataTemplate x:DataType="model:Recipe">
                     <Grid Padding="10">
                         <Frame HeightRequest="125" Style="{StaticResource CardView}">
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=GoToDetailsPageCommand}"
-                                        CommandParameter="{Binding .}"/>
+                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=GoToDetailsPageCommand}"
+                        CommandParameter="{Binding .}" />
                             </Frame.GestureRecognizers>
-                            <Grid Padding="0" ColumnDefinitions="125,*">
+                            <Grid Padding="0" ColumnDefinitions="Auto,*,Auto">
                                 <Image Aspect="AspectFill" Source="{Binding RecipeImage}"
-                                       WidthRequest="125"
-                                       HeightRequest="125"/>
+                           WidthRequest="125"
+                           HeightRequest="125" Grid.Column="0" />
                                 <VerticalStackLayout
-                                    VerticalOptions="Center"
+                                    VerticalOptions="Start"
                                     Grid.Column="1"
                                     Padding="10">
-                                    <Label Style="{StaticResource LargeLabel}" Text="{Binding RecipeName}" />
-                                    <Label Style="{StaticResource MediumLabel}" Text="{Binding MealType}" />
-                                    <Label Style="{StaticResource MediumLabel}" Text="{Binding CookTime, StringFormat='{0} mins'}" />
+                                    <Label Style="{StaticResource LargeLabel}" Text="{Binding RecipeName}" FontAttributes="Bold"/>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Style="{StaticResource MediumLabel}" Text="{Binding MealType}" />
+                                        <Label Text=", " />
+                                        <Label Style="{StaticResource MediumLabel}" Text="{Binding Equipment}" />
+                                    </StackLayout>
+                                    <Label Style="{StaticResource SmallLabel}" Text="{Binding CookingTime, StringFormat='{0} mins'}" />
                                 </VerticalStackLayout>
                             </Grid>
                         </Frame>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+
         </CollectionView>
 
-
-    </Grid>
-
+    </StackLayout>
 
 </ContentPage>

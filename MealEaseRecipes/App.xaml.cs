@@ -1,4 +1,6 @@
-﻿namespace MealEaseRecipes;
+﻿using MealEaseRecipes.ViewModels;
+
+namespace MealEaseRecipes;
 
 public partial class App : Application
 {
@@ -6,7 +8,11 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new AppShell();
-	}
+        MainViewModel = new MainViewModel();
+
+        MainPage = new AppShell();
+    }
+
+    public static MainViewModel MainViewModel { get; internal set; }
 }
 

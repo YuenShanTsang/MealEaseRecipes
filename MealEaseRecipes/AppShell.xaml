@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
+
 <Shell
     x:Class="MealEaseRecipes.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -20,6 +21,11 @@
         Title="Details"
         ContentTemplate="{DataTemplate local:DetailsPage}"
         Route="DetailsPage" />
+
+    <ShellContent
+        Title="Create"
+        ContentTemplate="{DataTemplate local:CreatePage}"
+        Route="CreatePage" />
 
 </Shell>
 
