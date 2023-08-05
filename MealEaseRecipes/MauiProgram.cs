@@ -22,6 +22,7 @@ public static class MauiProgram
         builder.Services.AddTransient<DetailsViewModel>();
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<DetailsPage>();
+        builder.Services.AddTransient<CreatePage>();
         builder.Services.AddTransient<Recipe>();
 
 
