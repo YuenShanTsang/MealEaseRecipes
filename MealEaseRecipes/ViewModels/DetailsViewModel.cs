@@ -15,10 +15,10 @@ namespace MealEaseRecipes.ViewModels
         }
 
         public string RecipeName => recipe?.RecipeName;
-        public string RecipeImage => recipe?.RecipeImage;
+        public ImageSource RecipeImage => recipe?.RecipeImage;
         public string MealType => recipe?.MealType;
-        public int CookTime => recipe?.CookTime ?? 0;
-        public string Appliance => recipe?.Appliance;
+        public int CookingTime => recipe?.CookingTime ?? 0;
+        public string Appliance => recipe?.Equipment;
         public string Ingredients => recipe?.Ingredients;
         public string Steps => recipe?.Steps;
 
