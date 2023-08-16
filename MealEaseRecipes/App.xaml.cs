@@ -4,15 +4,13 @@ namespace MealEaseRecipes;
 
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
-
-        MainViewModel = new MainViewModel();
+    public App()
+    {
+        InitializeComponent();
 
         MainPage = new AppShell();
     }
 
     public static MainViewModel MainViewModel { get; internal set; }
-}
 
+}

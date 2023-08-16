@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MealEaseRecipes.Views.DetailsPage"
              Title="{Binding Title}">
-<VerticalStackLayout>
+    <ScrollView>
+    <VerticalStackLayout Padding="20">
         <Label 
             Text="{Binding RecipeName}"
             FontSize="Large"
@@ -25,13 +26,13 @@
             HorizontalOptions="Center" />
 
         <Label 
-            Text="{Binding CookTime, StringFormat='Cook Time: {0} mins'}"
+            Text="{Binding CookingTime, StringFormat='Cooking Time: {0} mins'}"
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
         <Label 
-            Text="{Binding Appliance}"
+            Text="{Binding Equipment}"
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
@@ -49,4 +50,5 @@
             HorizontalOptions="Center" />
 
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

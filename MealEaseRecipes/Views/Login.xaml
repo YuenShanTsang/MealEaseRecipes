@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MealEaseRecipes.Views.RegisterPage"
-             Title="Register">
-     <VerticalStackLayout
-         HorizontalOptions="Center" 
-         VerticalOptions="Center">
+             x:Class="MealEaseRecipes.Views.Login"
+             Title="Login">
 
-        <!-- Register label -->
+    <VerticalStackLayout
+         HorizontalOptions="Center" 
+         VerticalOptions="Center" >
+
+        <!-- Login label -->
         <Label
-            Text="Register"
+            Text="Login"
             CharacterSpacing="2"
             FontAttributes="Bold"
             FontSize="30"
@@ -26,12 +27,12 @@
         <!-- Password entry -->
         <StackLayout Orientation="Horizontal" Spacing="15" Margin="15">
             <Image Source="https://static.vecteezy.com/system/resources/previews/000/581/808/original/lock-icon-vector-illustration.jpg" WidthRequest="30" HeightRequest="30" />
-            <Entry Placeholder="Enter password" WidthRequest="200" IsPassword="True" Text="{Binding Password}" FontSize="18"/>
+            <Entry Placeholder="Enter password" WidthRequest="200" IsPassword="True" Text="{Binding UserPassword}" FontSize="18"/>
         </StackLayout>
 
-        <!-- Register Button -->
+        <!-- Login Button -->
         <Button
-            Text="Register"
+            Text="Login"
             Margin="20"
             VerticalOptions="Center"
             HorizontalOptions="FillAndExpand"
@@ -40,7 +41,18 @@
             FontSize="18"
             CornerRadius="8"
             HeightRequest="48"
-            Command="{Binding RegisterUser}" />
+            Command="{Binding LoginBtn}" />
+
+        <!-- Register Button -->
+        <Button
+            Text="Register using Email"
+            Grid.Row="5"
+            BackgroundColor="{DynamicResource Secondary}"
+            TextColor="RosyBrown"
+            FontSize="15"
+            CornerRadius="20"
+            HeightRequest="40"
+            Command="{Binding RegisterBtn}" />
 
     </VerticalStackLayout>
 </ContentPage>

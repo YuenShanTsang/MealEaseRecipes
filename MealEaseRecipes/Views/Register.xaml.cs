@@ -1,12 +1,13 @@
-﻿using MealEaseRecipes.ViewModels;
+using MealEaseRecipes.ViewModels;
 
 namespace MealEaseRecipes.Views;
 
-public partial class RegisterPage : ContentPage
+public partial class Register : ContentPage
 {
-	public RegisterPage()
+	public Register()
 	{
 		InitializeComponent();
         BindingContext = new RegisterViewModel(Navigation);
+
     }
 }

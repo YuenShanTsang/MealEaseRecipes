@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MealEaseRecipes.Views.CreatePage"
-             Title="CreatePage">
+             x:Class="MealEaseRecipes.Views.Recipe.EditRecipePage"
+             Title="Edit Recipe">
     <ScrollView>
         <VerticalStackLayout Spacing="10" Margin="10">
 
             <!-- Image Preview -->
             <Image x:Name="ImagePreview"
-                   Source="{Binding RecipeImage}"
-                   HeightRequest="200"
+                   Source="{Binding Image}"  
+               HeightRequest="200"
                    WidthRequest="200"
                    HorizontalOptions="Center" />
 
-            <!-- Image Selection -->
-            <Button x:Name="SelectImageButton"
-                    Text="Select Image"
+            <!--Image Selection-->
+            <Button x:Name="SelectImageButton"  
+                  Text="Select Image"
                     Command="{Binding SelectImageCommand}"
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="CenterAndExpand"/>
@@ -93,5 +93,4 @@
                     Margin="10"/>
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

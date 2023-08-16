@@ -1,13 +1,17 @@
-﻿using System;
-namespace MealEaseRecipes.Models
+﻿namespace MealEaseRecipes.Models
 {
-	public class Recipe
-	{
+
+    public class Recipe
+    {
+        public string Key { get; set; }
+
+        public string UserId { get; set; }
+
         // The name of the recipe  
         public string RecipeName { get; set; }
 
         // The image URL or path for the recipe
-        public ImageSource RecipeImage { get; set; }
+        public string Image { get; set; }
 
         // The type of meal (e.g., breakfast, lunch, dinner)
         public string MealType { get; set; }
@@ -25,4 +29,3 @@ namespace MealEaseRecipes.Models
         public string Steps { get; set; }
     }
 }
-

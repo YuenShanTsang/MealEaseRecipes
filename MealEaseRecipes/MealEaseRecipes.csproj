@@ -55,24 +55,35 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="FirebaseAuthentication.net" Version="3.7.2" />
+		<PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
+		<PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+		<PackageReference Include="Xam.Plugin.Media" Version="6.0.2" />
+		<PackageReference Include="Xamarin.Essentials" Version="1.8.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="Models\" />
-	  <None Remove="Services\" />
 	  <None Remove="ViewModels\" />
 	  <None Remove="Views\" />
+	  <None Remove="Resources\Images\recipe.png" />
+	  <None Remove="Resources\Images\favourite.png" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Models\" />
-	  <Folder Include="Services\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiXaml Update="Views\Login.xaml">
 	    <Generator>MSBuild:Compile</Generator>
+	    <SubType>Designer</SubType>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Register.xaml">
 	    <Generator>MSBuild:Compile</Generator>
+	    <SubType>Designer</SubType>
 	  </MauiXaml>
+	</ItemGroup>
+	<ItemGroup>
+	  <BundleResource Include="Resources\Images\recipe.png" />
+	  <BundleResource Include="Resources\Images\favourite.png" />
 	</ItemGroup>
 </Project>

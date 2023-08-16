@@ -1,13 +1,14 @@
-﻿using MealEaseRecipes.ViewModels;
+using MealEaseRecipes.ViewModels;
 
 namespace MealEaseRecipes.Views;
 
-public partial class LoginPage : ContentPage
+public partial class Login : ContentPage
 {
-	public LoginPage()
+ 
+    public Login()
 	{
 		InitializeComponent();
-
         BindingContext = new LoginViewModel(Navigation);
     }
+   
 }

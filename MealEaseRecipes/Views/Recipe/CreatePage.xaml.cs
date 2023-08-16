@@ -10,4 +10,5 @@ public partial class CreatePage : ContentPage
 
         BindingContext = new CreateViewModel();
     }
+
 }

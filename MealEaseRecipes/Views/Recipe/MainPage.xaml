@@ -1,0 +1,95 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:MealEaseRecipes.Models"
+             xmlns:viewmodel="clr-namespace:MealEaseRecipes.ViewModels"
+             x:Class="MealEaseRecipes.Views.MainPage"
+             x:DataType="viewmodel:MainViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+ Add Recipe" Command="{Binding CreateRecipeCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <Style x:Key="CardView" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="HasShadow" Value="True" />
+        </Style>
+    </ContentPage.Resources>
+    <ScrollView>
+        <StackLayout>
+
+            <SearchBar Placeholder="Search" Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" HorizontalOptions="FillAndExpand" WidthRequest="{Binding ScreenWidth}"/>
+
+
+            <CollectionView ItemsSource="{Binding FilteredRecipes}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate x:DataType="model:Recipe">
+                        <Grid Padding="10">
+                            <Frame HeightRequest="170" Style="{StaticResource CardView}">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=GoToDetailsPageCommand}"
+                                           CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                <Grid Padding="0" ColumnDefinitions="Auto,*,Auto">
+                                    <Image Aspect="AspectFill" Source="{Binding Image}"
+                                           WidthRequest="125"
+                                           HeightRequest="125" Grid.Column="0" />
+                                    <VerticalStackLayout
+                                        VerticalOptions="Start"
+                                        Grid.Column="1"
+                                        Padding="10">
+                                        <Label Style="{StaticResource LargeLabel}" Text="{Binding RecipeName}" FontAttributes="Bold"/>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Style="{StaticResource MediumLabel}" Text="{Binding MealType}" />
+                                            <Label Text=", " />
+                                            <Label Style="{StaticResource MediumLabel}" Text="{Binding Equipment}" />
+                                        </StackLayout>
+                                        <Label Style="{StaticResource SmallLabel}" Text="{Binding CookingTime, StringFormat='{0} mins'}" />
+                                        <HorizontalStackLayout
+                                            VerticalOptions="Center"
+                                            Grid.Column="2" >
+                                            <Button
+                                               x:Name="EditButton"
+                                               Text="Edit"
+                                               Margin="5"
+                                               BackgroundColor="DarkSlateGray"
+                                               SemanticProperties.Hint="Counts the number of times you click"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=EditRecipeCommand}"
+                                               CommandParameter="{Binding .}"
+                                                HorizontalOptions="Center" />
+                                            <Button
+                                                x:Name="DeleteButton"
+                                                Text="Delete"
+                                                Margin="5"
+                                                BackgroundColor="Firebrick"
+                                                SemanticProperties.Hint="Counts the number of times you click"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteRecipeCommand}"
+                                                CommandParameter="{Binding .}"
+                                                HorizontalOptions="Center" />
+                                             <Button
+                                                x:Name="FavouriteButton"
+                                                Text="♥"
+                                                BackgroundColor="White"
+                                                WidthRequest="45"
+                                                HeightRequest="45"
+                                                CornerRadius="22"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=AddFavouritesCommand}"
+                                                CommandParameter="{Binding .}"
+                                                HorizontalOptions="Center" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+    </ScrollView>
+</ContentPage>
