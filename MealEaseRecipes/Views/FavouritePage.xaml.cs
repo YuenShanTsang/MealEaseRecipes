@@ -1,12 +1,10 @@
-﻿using MealEase_Recipes.ViewModels;
-
-namespace MealEase_Recipes.Views;
+﻿namespace MealEaseRecipes.Views;
 
 public partial class FavouritePage : ContentPage
 {
-	public FavouritePage()
-	{
-		InitializeComponent();
+    public FavouritePage()
+    {
+        InitializeComponent();
         BindingContext = new FavouriteViewModel(Navigation);
     }
 

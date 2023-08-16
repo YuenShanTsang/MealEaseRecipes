@@ -1,6 +1,6 @@
-﻿using MealEase_Recipes.ViewModels;
+﻿using MealEaseRecipes.ViewModels;
 
-namespace MealEase_Recipes.Views;
+namespace MealEaseRecipes.Views;
 
 public partial class MainPage : ContentPage
 {

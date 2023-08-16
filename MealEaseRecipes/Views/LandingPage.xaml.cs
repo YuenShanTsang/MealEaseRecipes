@@ -1,7 +1,4 @@
-using Microsoft.Maui.Controls;
-using System.Xml.XPath;
-
-namespace MealEase_Recipes.Views;
+namespace MealEaseRecipes.Views;
 
 public partial class LandingPage : ContentPage
 {
