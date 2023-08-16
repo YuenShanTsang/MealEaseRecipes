@@ -1,16 +1,17 @@
-﻿using MealEaseRecipes.ViewModels;
+﻿using MealEase_Recipes.ViewModels;
 
-namespace MealEaseRecipes.Views;
-
-public partial class DetailsPage : ContentPage
+namespace MealEase_Recipes.Views
 {
-	public DetailsPage()
-	{
-		InitializeComponent();
-	}
-
-    public DetailsPage(DetailsViewModel vm) : this()
+    public partial class DetailsPage : ContentPage
     {
-        BindingContext = vm;
+        public DetailsPage()
+        {
+            InitializeComponent();
+        }
+
+        public DetailsPage(DetailsViewModel vm) : this()
+        {
+            BindingContext = vm;
+        }
     }
 }

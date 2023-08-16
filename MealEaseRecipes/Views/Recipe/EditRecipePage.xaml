@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MealEaseRecipes.Views.Recipe.EditRecipePage"
+             Title="Edit Recipe">
+    <ScrollView>
+        <VerticalStackLayout Spacing="10" Margin="10">
+
+            <!-- Image Preview -->
+            <Image x:Name="ImagePreview"
+                   Source="{Binding Image}"  
+               HeightRequest="200"
+                   WidthRequest="200"
+                   HorizontalOptions="Center" />
+
+            <!--Image Selection-->
+            <Button x:Name="SelectImageButton"  
+                  Text="Select Image"
+                    Command="{Binding SelectImageCommand}"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"/>
+
+            <!-- Recipe Name Entry -->
+            <Entry x:Name="RecipeNameEntry"
+                   Placeholder="Recipe Name"
+                   Text="{Binding RecipeName, Mode=TwoWay}"/>
+
+            <!-- Meal Type Radio Buttons -->
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Meal Type:" VerticalOptions="Center" />
+                <RadioButton x:Name="BreakfastRadio"
+                             Content="Breakfast"
+                             IsChecked="{Binding IsBreakfast}" />
+                <RadioButton x:Name="LunchRadio"
+                             Content="Lunch"
+                             IsChecked="{Binding IsLunch}" />
+                <RadioButton x:Name="DinnerRadio"
+                             Content="Dinner"
+                             IsChecked="{Binding IsDinner}" />
+            </StackLayout>
+
+            <!-- Cooking Time Picker -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Cooking Time:"
+                       VerticalOptions="Center" />
+
+                <Label Text="{Binding CookingTime, StringFormat='{0} mins'}"
+                       Grid.Column="1"
+                       VerticalOptions="Center"
+                       Margin="10,0,0,0" />
+            </Grid>
+
+            <!-- Cooking Time Stepper -->
+            <StackLayout Orientation="Horizontal">
+                <Stepper x:Name="CookingTimeStepper"
+                         Minimum="0"
+                         Maximum="120"
+                         Increment="5"
+                         Value="{Binding CookingTime, Mode=TwoWay}"
+                         HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+
+            <!-- Equipment Selection -->
+            <Label Text="Equipment:" />
+            <Picker x:Name="EquipmentPicker"
+                    Title="Select Equipment"
+                    ItemsSource="{Binding EquipmentList}"
+                    SelectedItem="{Binding SelectedEquipment}" />
+
+            <!-- Ingredients Entry -->
+            <Label Text="Ingredients:" />
+            <Editor x:Name="IngredientsEditor"
+                    Placeholder="Enter ingredients here..."
+                    HeightRequest="100"
+                    Text="{Binding Ingredients}" />
+
+            <!-- Steps Entry -->
+            <Label Text="Steps:" />
+            <Editor x:Name="StepsEditor"
+                    Placeholder="Enter steps here..."
+                    HeightRequest="150"
+                    Text="{Binding Steps}" />
+
+            <!-- Submit Button -->
+            <Button Text="Submit"
+                    Command="{Binding SubmitCommand}"
+                    HorizontalOptions="Center"
+                    Margin="10"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

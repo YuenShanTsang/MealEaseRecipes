@@ -1,21 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MealEaseRecipes.Views.LoginPage"
-             Title="Login">
+             x:Class="MealEaseRecipes.Views.Register"
+             Title="Register">
+
     <VerticalStackLayout
          HorizontalOptions="Center" 
-         VerticalOptions="Center" >
+         VerticalOptions="Center">
 
-        <!-- Login label -->
+        <!-- Register label -->
         <Label
-            Text="Login"
+            Text="Register"
             CharacterSpacing="2"
             FontAttributes="Bold"
             FontSize="30"
             HorizontalOptions="Center"
             Margin="60,0"
             TextColor="{DynamicResource Primary}"/>
+
+
+        <StackLayout Orientation="Horizontal" Spacing="20" Margin="20">
+            <Image Source="https://icons.veryicon.com/png/o/miscellaneous/administration/account-25.png" WidthRequest="20" HeightRequest="20" />
+            <Entry Placeholder="Enter First Name" WidthRequest="200" Text="{Binding FirstName}" FontSize="18"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" Spacing="20" Margin="20">
+            <Image Source="https://icons.veryicon.com/png/o/miscellaneous/administration/account-25.png" WidthRequest="20" HeightRequest="20" />
+            <Entry Placeholder="Enter Lastname" WidthRequest="200" Text="{Binding LastName}" FontSize="18"/>
+        </StackLayout>
 
         <!-- Email entry -->
         <StackLayout Orientation="Horizontal" Spacing="20" Margin="20">
@@ -26,32 +37,21 @@
         <!-- Password entry -->
         <StackLayout Orientation="Horizontal" Spacing="15" Margin="15">
             <Image Source="https://static.vecteezy.com/system/resources/previews/000/581/808/original/lock-icon-vector-illustration.jpg" WidthRequest="30" HeightRequest="30" />
-            <Entry Placeholder="Enter password" WidthRequest="200" IsPassword="True" Text="{Binding UserPassword}" FontSize="18"/>
+            <Entry Placeholder="Enter password" WidthRequest="200" IsPassword="True" Text="{Binding Password}" FontSize="18"/>
         </StackLayout>
 
-        <!-- Login Button -->
+        <!-- Register Button -->
         <Button
-            Text="Login"
+            Text="Register"
             Margin="20"
             VerticalOptions="Center"
             HorizontalOptions="FillAndExpand"
-            BackgroundColor="{DynamicResource RosyBrown}"
+            BackgroundColor="RosyBrown"
             TextColor="White"
             FontSize="18"
             CornerRadius="8"
             HeightRequest="48"
-            Command="{Binding LoginBtn}" />
-
-        <!-- Register Button -->
-        <Button
-            Text="Register using Email"
-            Grid.Row="5"
-            BackgroundColor="{DynamicResource Secondary}"
-            TextColor="{DynamicResource RosyBrown}"
-            FontSize="15"
-            CornerRadius="20"
-            HeightRequest="40"
-            Command="{Binding RegisterBtn}" />
+            Command="{Binding RegisterUser}" />
 
     </VerticalStackLayout>
 </ContentPage>
