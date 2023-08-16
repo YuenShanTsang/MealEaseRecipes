@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MealEaseRecipes.Models;
 
-
 namespace MealEaseRecipes.ViewModels
 {
     public partial class DetailsViewModel : ObservableObject
@@ -15,7 +14,7 @@ namespace MealEaseRecipes.ViewModels
         }
 
         public string RecipeName => recipe?.RecipeName;
-        public ImageSource RecipeImage => recipe?.RecipeImage;
+        public ImageSource RecipeImage => recipe?.Image;
         public string MealType => recipe?.MealType;
         public int CookingTime => recipe?.CookingTime ?? 0;
         public string Appliance => recipe?.Equipment;
@@ -25,6 +24,6 @@ namespace MealEaseRecipes.ViewModels
         [ObservableProperty]
         string title;
 
+
     }
 }
-

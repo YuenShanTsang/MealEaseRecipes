@@ -1,33 +1,60 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Firebase.Database;
+using Firebase.Database.Query;
+using Firebase.Storage;
 using MealEaseRecipes.Models;
-using Microsoft.Maui;
-using Microsoft.Maui.Controls;
+using Plugin.Media.Abstractions;
 
 namespace MealEaseRecipes.ViewModels
 {
     public class CreateViewModel : INotifyPropertyChanged
     {
+
+        // Realtime Database
+        FirebaseClient firebaseClient = new Firebase.Database.FirebaseClient("https://mealeaserecipes-default-rtdb.firebaseio.com/");
+
+        public ICommand SelectImageCommand { get; private set; }
+        public ICommand SubmitCommand { get; private set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Command for selecting an image
-        public ICommand SelectImageCommand { get; private set; }
+        public string userId = "";
+        public bool IsNotImageSelected => !IsImageSelected;
 
-        private ImageSource _recipeImage;
-        public ImageSource RecipeImage
+        private MediaFile result;
+
+        // Recipe Image
+        private string _image;
+        public string Image
         {
-            get => _recipeImage;
+            get => _image;
             set
             {
-                if (_recipeImage != value)
+                if (_image != value)
                 {
-                    _recipeImage = value;
-                    OnPropertyChanged(nameof(RecipeImage));
+                    _image = value;
+                    OnPropertyChanged(nameof(Image));
                 }
             }
         }
 
+        // Recipe image selection
+        private bool _isImageSelected = false;
+        public bool IsImageSelected
+        {
+            get => _isImageSelected;
+            set
+            {
+                if (_isImageSelected != value)
+                {
+                    _isImageSelected = value;
+                    OnPropertyChanged(nameof(IsImageSelected));
+                    OnPropertyChanged(nameof(IsNotImageSelected));
+                }
+            }
+        }
 
         // Property for the Recipe Name
         private string _recipeName;
@@ -102,6 +129,18 @@ namespace MealEaseRecipes.ViewModels
             }
         }
 
+        // Collection of equipment options
+        private ObservableCollection<string> _equipmentList;
+        public ObservableCollection<string> EquipmentList
+        {
+            get => _equipmentList;
+            set
+            {
+                _equipmentList = value;
+                OnPropertyChanged(nameof(EquipmentList));
+            }
+        }
+
         // Property for Selected Equipment
         private string _selectedEquipment;
         public string SelectedEquipment
@@ -147,31 +186,13 @@ namespace MealEaseRecipes.ViewModels
             }
         }
 
-
-
-        // Command for the Submit button
-        public ICommand SubmitCommand { get; private set; }
-
-        // Collection of equipment options
-        private ObservableCollection<string> _equipmentList;
-        public ObservableCollection<string> EquipmentList
-        {
-            get => _equipmentList;
-            set
-            {
-                _equipmentList = value;
-                OnPropertyChanged(nameof(EquipmentList));
-            }
-        }
-
         // Constructor
         public CreateViewModel()
         {
             // Initialize SubmitCommand to call OnSubmitButtonClicked
             SubmitCommand = new Command(OnSubmitButtonClicked);
 
-
-            SelectImageCommand = new Command(async () => await SelectImage());
+            userId = Xamarin.Essentials.Preferences.Get("UserKey", "");
 
             // Initialize EquipmentList with equipment options
             EquipmentList = new ObservableCollection<string>
@@ -186,40 +207,99 @@ namespace MealEaseRecipes.ViewModels
                 "Pot",
                 "Electric kettle"
             };
-        }
 
-        private async Task SelectImage()
-        {
-            var selectedImage = await MediaPicker.PickPhotoAsync(new MediaPickerOptions
+            SelectImageCommand = new Command(async () =>
             {
-                Title = "Select an image"
+                string imageUrl = await OnSelectImageButtonClicked();
+                if (!string.IsNullOrEmpty(imageUrl))
+                {
+                    Image = imageUrl;
+                    IsImageSelected = true;
+                }
+                else
+                {
+                    // Display an error message if image upload fails
+                    await Application.Current.MainPage.DisplayAlert("Error", "Failed to upload image.", "OK");
+                }
             });
 
-            if (selectedImage != null)
+        }
+
+        // Image Selection
+        private async Task<string> OnSelectImageButtonClicked()
+        {
+            try
             {
-                using (var imageStream = await selectedImage.OpenReadAsync())
+                var photo = await Microsoft.Maui.Media.MediaPicker.PickPhotoAsync();
+
+                if (photo == null)
+                    return string.Empty; // User canceled the photo selection
+
+                using (var stream = await photo.OpenReadAsync())
                 {
-                    // Convert the image stream to a byte array
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    var imagePath = $"images/{Guid.NewGuid().ToString("N")}.jpg";
+
+                    var firebaseStorage = new FirebaseStorage("mealeaserecipes.appspot.com");
+                    var response = await firebaseStorage.Child(imagePath).PutAsync(stream);
+
+                    if (response != null)
                     {
-                        await imageStream.CopyToAsync(memoryStream);
-                        byte[] imageBytes = memoryStream.ToArray();
-
-                        // Convert the byte array to an ImageSource
-                        ImageSource imageSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
-
-                        // Set the RecipeImage property to the selected ImageSource
-                        RecipeImage = imageSource;
+                        Console.WriteLine("Image uploaded successfully. Download URL: " + response);
+                        return response; // Return the download URL
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to upload image");
+                        return string.Empty; // Return an appropriate default value
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error selecting and uploading image: " + ex.Message);
+                return string.Empty; // Return an appropriate default value
+            }
         }
 
+        // Recipe form submission validation
+        private bool ValidateFormFields()
+        {
+            if (string.IsNullOrWhiteSpace(RecipeName))
+                return false;
 
+            if (!IsBreakfast && !IsLunch && !IsDinner)
+                return false;
+
+            if (CookingTime <= 0)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(SelectedEquipment))
+                return false;
+
+            if (string.IsNullOrWhiteSpace(Ingredients))
+                return false;
+
+            if (string.IsNullOrWhiteSpace(Steps))
+                return false;
+
+            if (!IsImageSelected)
+                return false;
+
+            return true;
+        }
 
         // Method called when the Submit button is clicked
         private async void OnSubmitButtonClicked()
         {
+            if (!ValidateFormFields())
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Please fill in all required fields before submitting the form.", "OK");
+                return;
+            }
+
+            string imageUrl = Image;
+
+
             // Determine the meal type based on the selected radio button
             string mealType = "";
 
@@ -230,45 +310,56 @@ namespace MealEaseRecipes.ViewModels
             else if (IsDinner)
                 mealType = "Dinner";
 
-            // Create a Recipe object with the collected data
-            Recipe newRecipe = new Recipe
+            try
             {
-                RecipeImage = RecipeImage,
-                RecipeName = RecipeName,
-                MealType = mealType,
-                CookingTime = CookingTime,
-                Equipment = SelectedEquipment,
-                Ingredients = Ingredients,
-                Steps = Steps
-            };
 
-            // Add the new recipe to the MainViewModel's collection of recipes
-            App.MainViewModel.Recipes.Add(newRecipe);
+                var response = await firebaseClient.Child("Recipes").PostAsync(
+                    new Recipe
+                    {
+                        Image = imageUrl,
+                        RecipeName = RecipeName,
+                        UserId = userId,
+                        MealType = mealType,
+                        CookingTime = CookingTime,
+                        Equipment = SelectedEquipment,
+                        Ingredients = Ingredients,
+                        Steps = Steps
+                    });
+                await firebaseClient.Child("Recipes").Child(response.Key).PutAsync(new Recipe
+                {
+                    Key = response.Key,
+                    Image = imageUrl,
+                    RecipeName = RecipeName,
+                    UserId = userId,
+                    MealType = mealType,
+                    CookingTime = CookingTime,
+                    Equipment = SelectedEquipment,
+                    Ingredients = Ingredients,
+                    Steps = Steps
+                });
 
-            // Check if the new recipe matches the search criteria
-            if (IsRecipeMatchingSearch(newRecipe))
+                Console.WriteLine("Response " + response.Key);
+
+                // Check the status code to determine if the data was saved successfully
+                if (response != null)
+                {
+                    // Display an alert indicating successful submission (optional)
+                    string message = $"Recipe Name: {RecipeName}\nMeal Type: {mealType}\nCooking Time: {CookingTime}\nEquipment: {SelectedEquipment}\nIngredients: {Ingredients}\nSteps: {Steps}";
+                    await Application.Current.MainPage.DisplayAlert("Successful Recipe Submission", message, "OK");
+
+                    await Application.Current.MainPage.Navigation.PopAsync();
+                }
+                else
+                {
+                    Console.WriteLine("Failed to save data");
+                }
+            }
+            catch (Exception ex)
             {
-                // Add the new recipe to the FilteredRecipes collection in MainViewModel
-                App.MainViewModel.FilteredRecipes.Add(newRecipe);
+                Console.WriteLine("An error occurred: " + ex.Message);
             }
 
-            // Display an alert indicating successful submission (optional)
-            string message = $"Recipe Name: {RecipeName}\nMeal Type: {mealType}\nCooking Time: {CookingTime}\nEquipment: {SelectedEquipment}\nIngredients: {Ingredients}\nSteps: {Steps}";
-            await Application.Current.MainPage.DisplayAlert("Form Submission", message, "OK");
-
-            await Application.Current.MainPage.Navigation.PopAsync();
         }
-
-        private bool IsRecipeMatchingSearch(Recipe recipe)
-        {
-            string searchText = App.MainViewModel.SearchText.ToLower();
-
-            return recipe.RecipeName.ToLower().Contains(searchText) ||
-                   recipe.MealType.ToLower().Contains(searchText) ||
-                   recipe.Equipment.ToLower().Contains(searchText);
-        }
-
-
 
         // Method to raise the PropertyChanged event
         protected virtual void OnPropertyChanged(string propertyName)
@@ -277,4 +368,3 @@ namespace MealEaseRecipes.ViewModels
         }
     }
 }
-
