@@ -6,6 +6,7 @@
              x:DataType="viewmodel:MainViewModel"
              Title="{Binding Title}">
 
+    <!--Create recipe-->
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="+ Add Recipe" Command="{Binding CreateRecipeCommand}" />
     </ContentPage.ToolbarItems>
@@ -20,8 +21,8 @@
     <ScrollView>
         <StackLayout>
 
+            <!--Search-->
             <SearchBar Placeholder="Search" Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" HorizontalOptions="FillAndExpand" WidthRequest="{Binding ScreenWidth}"/>
-
 
             <CollectionView ItemsSource="{Binding FilteredRecipes}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
@@ -42,16 +43,24 @@
                                         VerticalOptions="Start"
                                         Grid.Column="1"
                                         Padding="10">
+                                        <!--Name-->
                                         <Label Style="{StaticResource LargeLabel}" Text="{Binding RecipeName}" FontAttributes="Bold"/>
+
+                                        <!--Meal type and Equipment-->
                                         <StackLayout Orientation="Horizontal">
                                             <Label Style="{StaticResource MediumLabel}" Text="{Binding MealType}" />
                                             <Label Text=", " />
                                             <Label Style="{StaticResource MediumLabel}" Text="{Binding Equipment}" />
                                         </StackLayout>
+
+                                        <!--Time-->
                                         <Label Style="{StaticResource SmallLabel}" Text="{Binding CookingTime, StringFormat='{0} mins'}" />
+
                                         <HorizontalStackLayout
                                             VerticalOptions="Center"
                                             Grid.Column="2" >
+
+                                            <!--Edit-->
                                             <Button
                                                x:Name="EditButton"
                                                Text="Edit"
@@ -61,6 +70,8 @@
                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=EditRecipeCommand}"
                                                CommandParameter="{Binding .}"
                                                 HorizontalOptions="Center" />
+
+                                            <!--Delete-->
                                             <Button
                                                 x:Name="DeleteButton"
                                                 Text="Delete"
@@ -70,16 +81,26 @@
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=DeleteRecipeCommand}"
                                                 CommandParameter="{Binding .}"
                                                 HorizontalOptions="Center" />
-                                             <Button
+
+                                            <!--Favourite-->
+                                            <ImageButton
                                                 x:Name="FavouriteButton"
-                                                Text="♥"
-                                                BackgroundColor="White"
-                                                WidthRequest="45"
-                                                HeightRequest="45"
-                                                CornerRadius="22"
+                                                Margin="5"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MainViewModel}}, Path=AddFavouritesCommand}"
                                                 CommandParameter="{Binding .}"
-                                                HorizontalOptions="Center" />
+                                                HorizontalOptions="Center"
+                                                WidthRequest="30"
+                                                HeightRequest="30">
+                                                <ImageButton.Triggers>
+                                                    <DataTrigger TargetType="ImageButton" Binding="{Binding IsFavourite}" Value="True">
+                                                        <Setter Property="Source" Value="heartfull.png" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="ImageButton" Binding="{Binding IsFavourite}" Value="False">
+                                                        <Setter Property="Source" Value="heartempty.png" />
+                                                    </DataTrigger>
+                                                </ImageButton.Triggers>
+                                            </ImageButton>
+
                                         </HorizontalStackLayout>
                                     </VerticalStackLayout>
                                 </Grid>
