@@ -89,7 +89,7 @@
                     Text="{Binding Steps}" />
 
             <!-- Submit Button -->
-            <Button Text="Submit and Select image"
+            <Button Text="Submit"
                     BackgroundColor="RosyBrown"
                     Command="{Binding SubmitCommand}"
                     HorizontalOptions="Center"

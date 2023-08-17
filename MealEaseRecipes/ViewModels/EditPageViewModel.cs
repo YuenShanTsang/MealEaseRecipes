@@ -2,7 +2,6 @@
 using Firebase.Database.Query;
 using Firebase.Storage;
 using MealEaseRecipes.Models;
-using MealEaseRecipes.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -21,6 +20,7 @@ class EditPageViewModel : INotifyPropertyChanged
 
     public string userId = "";
 
+    // Recipe being edited
     public Recipe recipe { get; set; }
 
     // Recipe Image
@@ -189,6 +189,7 @@ class EditPageViewModel : INotifyPropertyChanged
         // Initialize SubmitCommand to call OnSubmitButtonClicked
         SubmitCommand = new Command(OnSubmitButtonClicked);
 
+        // Command for selecting an image
         SelectImageCommand = new Command(async () =>
         {
             string imageUrl = await OnSelectImageButtonClicked();
@@ -204,6 +205,7 @@ class EditPageViewModel : INotifyPropertyChanged
             }
         });
 
+        // Set meal type radio buttons based on recipe
         Console.WriteLine("Meal Type " + recipe.MealType);
         if (recipe.MealType.First() == 'B')
         {
@@ -218,6 +220,7 @@ class EditPageViewModel : INotifyPropertyChanged
             IsDinner = true;
         }
 
+        // Initialize properties with recipe data
         this.recipe = recipe;
         RecipeName = recipe.RecipeName;
         Image = recipe.Image;
@@ -294,8 +297,7 @@ class EditPageViewModel : INotifyPropertyChanged
 
         try
         {
-
-           
+            // Update the recipe details in the Firebase database
             await firebaseClient.Child("Recipes").Child(this.recipe.Key).PutAsync(new Recipe
             {
                 Key = this.recipe.Key,
@@ -316,7 +318,8 @@ class EditPageViewModel : INotifyPropertyChanged
             string message = $"Recipe Name: {RecipeName}\nMeal Type: {mealType}\nCooking Time: {CookingTime}\nEquipment: {SelectedEquipment}\nIngredients: {Ingredients}\nSteps: {Steps}";
             await Application.Current.MainPage.DisplayAlert("Form Submission", message, "OK");
 
-            await Application.Current.MainPage.Navigation.PushAsync(new MainPage());
+            // Navigate back to the Main page
+            await Application.Current.MainPage.Navigation.PopAsync();
         }
         catch (Exception ex)
         {

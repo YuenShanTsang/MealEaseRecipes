@@ -15,14 +15,20 @@ namespace MealEaseRecipes.ViewModels
         // Realtime Database
         FirebaseClient firebaseClient = new Firebase.Database.FirebaseClient("https://mealeaserecipes-default-rtdb.firebaseio.com/");
 
+        // Commands for image selection and form submission
         public ICommand SelectImageCommand { get; private set; }
         public ICommand SubmitCommand { get; private set; }
 
+        // Event handler for property change notifications
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // User ID
         public string userId = "";
+
+        // Property to determine if an image is not selected
         public bool IsNotImageSelected => !IsImageSelected;
 
+        // Media file for selected image
         private MediaFile result;
 
         // Recipe Image
@@ -192,6 +198,7 @@ namespace MealEaseRecipes.ViewModels
             // Initialize SubmitCommand to call OnSubmitButtonClicked
             SubmitCommand = new Command(OnSubmitButtonClicked);
 
+            // Get the user ID from preferences
             userId = Xamarin.Essentials.Preferences.Get("UserKey", "");
 
             // Initialize EquipmentList with equipment options
@@ -208,6 +215,7 @@ namespace MealEaseRecipes.ViewModels
                 "Electric kettle"
             };
 
+            // Initialize SelectImageCommand to handle image selection
             SelectImageCommand = new Command(async () =>
             {
                 string imageUrl = await OnSelectImageButtonClicked();
@@ -298,7 +306,7 @@ namespace MealEaseRecipes.ViewModels
             }
 
             string imageUrl = Image;
-
+            
 
             // Determine the meal type based on the selected radio button
             string mealType = "";
@@ -312,7 +320,7 @@ namespace MealEaseRecipes.ViewModels
 
             try
             {
-
+                // Post the recipe data to the Firebase database
                 var response = await firebaseClient.Child("Recipes").PostAsync(
                     new Recipe
                     {
@@ -325,6 +333,8 @@ namespace MealEaseRecipes.ViewModels
                         Ingredients = Ingredients,
                         Steps = Steps
                     });
+
+                // Update the recipe data with the generated key
                 await firebaseClient.Child("Recipes").Child(response.Key).PutAsync(new Recipe
                 {
                     Key = response.Key,
@@ -347,6 +357,7 @@ namespace MealEaseRecipes.ViewModels
                     string message = $"Recipe Name: {RecipeName}\nMeal Type: {mealType}\nCooking Time: {CookingTime}\nEquipment: {SelectedEquipment}\nIngredients: {Ingredients}\nSteps: {Steps}";
                     await Application.Current.MainPage.DisplayAlert("Successful Recipe Submission", message, "OK");
 
+                    // Navigate back to the Main page
                     await Application.Current.MainPage.Navigation.PopAsync();
                 }
                 else

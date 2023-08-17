@@ -1,19 +1,26 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
+using MealEaseRecipes.Models;
 
-
-public class FavouriteViewModel : INotifyPropertyChanged
+namespace MealEaseRecipes.ViewModels
 {
-
-    public FavouriteViewModel(INavigation navigation)
+    // The FavouriteViewModel class represents the ViewModel for the user's favorite recipes page.
+    // It provides the necessary properties and methods to display and manage the user's favorite recipes.
+    public class FavouriteViewModel : ObservableObject
     {
+        // Collection of favorite recipes
+        private ObservableCollection<Recipe> _favoriteRecipes;
+        public ObservableCollection<Recipe> FavoriteRecipes
+        {
+            get => _favoriteRecipes;
+            set => SetProperty(ref _favoriteRecipes, value);
+        }
 
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        // Constructor for initializing the ViewModel
+        public FavouriteViewModel()
+        {
+            // Initialize the collection of favorite recipes
+            FavoriteRecipes = new ObservableCollection<Recipe>();
+        }
     }
 }

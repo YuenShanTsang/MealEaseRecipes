@@ -1,11 +1,8 @@
-﻿using Firebase.Auth;
+using Firebase.Auth;
 using Firebase.Database;
 using MealEaseRecipes.Views;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 
 namespace MealEaseRecipes.ViewModels;
 
@@ -94,8 +91,6 @@ internal class LoginViewModel : INotifyPropertyChanged
                 {
                     Console.WriteLine("User added");
                     UserList.Add(item.Object);
-
-
                 }
                 else
                 {
@@ -111,15 +106,10 @@ internal class LoginViewModel : INotifyPropertyChanged
         // when login button click we define new method
         LoginBtn = new Command(LoginBtnTappedAsync);
 
-
-
     }
 
     private async void LoginBtnTappedAsync(object obj)
     {
-
-
-
 
         if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(UserPassword))
         {
@@ -141,14 +131,24 @@ internal class LoginViewModel : INotifyPropertyChanged
             // After signin getfreshAuth data
             var content = await auth.GetFreshAuthAsync();
 
-
-
-
             IEnumerable<Models.User> obsCollection = (IEnumerable<Models.User>)UserList;
             var list = new List<Models.User>(obsCollection);
 
 
-            var user = list.Where(user => user.Email == content.User.Email).First();
+            var user = list.FirstOrDefault(user => user.Email == content.User.Email);
+
+            if (user != null)
+            {
+                // set shared pref to data
+                Preferences.Set("UserKey", user.Key);
+
+                // navigate to main page
+                await this._navigation.PushAsync(new MainPage());
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "User not found.", "OK");
+            }
 
             // set shared pref to data
             Preferences.Set("UserKey", user.Key);

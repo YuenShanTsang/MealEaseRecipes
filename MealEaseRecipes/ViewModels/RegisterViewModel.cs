@@ -1,4 +1,4 @@
-﻿using Firebase.Auth;
+using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Database.Query;
 using MealEaseRecipes.Models;
@@ -20,7 +20,7 @@ internal class RegisterViewModel : INotifyPropertyChanged
     private string password;
 
     private string firstName;
-
+    
     private string lastName;
     // Handler when input change in the xmal file
     public event PropertyChangedEventHandler PropertyChanged;

@@ -2,16 +2,17 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MealEaseRecipes.Views.DetailsPage"
+             xmlns:viewmodel="clr-namespace:MealEaseRecipes.ViewModels"
              Title="{Binding Title}">
     <ScrollView>
-    <VerticalStackLayout Padding="20">
-        <Label 
+        <VerticalStackLayout Padding="20">
+            <Label 
             Text="{Binding RecipeName}"
             FontSize="Large"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <Image
+            <Image
             Source="{Binding RecipeImage}"
             WidthRequest="200"
             HeightRequest="200"
@@ -19,36 +20,36 @@
             VerticalOptions="Center"
             HorizontalOptions="Center" />
 
-        <Label 
+            <Label 
             Text="{Binding MealType}"
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <Label 
+            <Label 
             Text="{Binding CookingTime, StringFormat='Cooking Time: {0} mins'}"
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <Label 
+            <Label 
             Text="{Binding Equipment}"
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <Label 
+            <Label 
             Text="{Binding Ingredients}"
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-        <Label 
+            <Label 
             Text="{Binding Steps}"
             FontSize="Medium"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
 
-    </VerticalStackLayout>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
